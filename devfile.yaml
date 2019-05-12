@@ -6,21 +6,37 @@ projects:
       type: git
       location: 'https://github.com/che-incubator/chectl.git'
 components:
-  - alias: theia-ide
+
+  - id: eclipse/che-theia/next
     type: cheEditor
-    id: eclipse/che-theia/1.0.0
-  - type: chePlugin
-    id: eclipse/che-machine-exec-plugin/0.0.1
+
+  - alias: git
+    type: dockerimage
+    image: sunix/git-devtools
+    mountSources: true
+    memoryLimit: 256M
+
+  - id: redhat/vscode-yaml/0.4.0
+    type: chePlugin
+
+  - alias: ts
+    id: che-incubator/typescript/1.30.2
+    type: chePlugin
+    memoryLimit: 1Gi 
+
 commands:
+
   - name: build
     actions:
       - type: exec
-        component: theia-ide
+        component: ts
         command: yarn
         workdir: /projects/chectl
+
   - name: test
     actions:
       - type: exec
-        component: theia-ide
+        component: ts
         command: yarn test
         workdir: /projects/chectl
+
